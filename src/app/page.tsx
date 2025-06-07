@@ -37,9 +37,6 @@ export default function Home() {
             </div>
           </div>
         </main>
-        <footer className="w-full  py-4 mt-12 text-center text-gray-500 text-sm bg-opacity-90 relative z-10">
-          &copy; {new Date().getFullYear()} ShopEase. All rights reserved.
-        </footer>
       </div>
 
     </div>

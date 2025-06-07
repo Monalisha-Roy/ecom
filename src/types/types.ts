@@ -1,3 +1,14 @@
+export interface Product {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    ratings?: number;
+    reviews?: number;
+    image: string;
+}
+
+
 export const categories = {
     "Fashion & Apparel": [
         "Men's Clothing", "Women's Clothing", "Kids & Baby Clothing", "Footwear", "Ethnic Wear", "Lingerie & Innerwear", "Accessories"
@@ -37,8 +48,5 @@ export const categories = {
     ],
     "Gifts & Occasions": [
         "Gift Cards", "Party Supplies", "Personalized Gifts"
-    ],
-    "Niche & Trending": [
-        "Eco-friendly Products", "Handmade & Artisanal Items", "Subscription Boxes", "Digital Products", "Pre-Owned or Refurbished Items", "Collectibles & Memorabilia"
     ]
 };
