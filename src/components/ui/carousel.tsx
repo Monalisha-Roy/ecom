@@ -3,10 +3,11 @@
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider } from 'keen-slider/react';
 import { useEffect } from 'react';
+import Image from 'next/image';
 
 const images = [
   "/img1.jpg",
-  "/img2.jpg",
+  "/bg.jpg",
 ];
 
 export default function Carousel() {
@@ -28,9 +29,11 @@ export default function Carousel() {
       <div ref={sliderRef} className="keen-slider mt-28 md:mt-12 h-[250px] md:h-[500px]">
         {images.map((src, index) => (
           <div key={index} className="keen-slider__slide h-full">
-            <img
+            <Image
               src={src}
               alt={`Slide ${index + 1}`}
+              width={1920}
+              height={500}
               className="w-full h-full object-cover"
             />
           </div>

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { categories } from "../../../src/types/types"
 
-
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [productsOpen, setProductsOpen] = useState(false);
@@ -56,22 +55,15 @@ export default function Navbar() {
                                     >
                                         &times;
                                     </button>
-                                    <ul className="py-8 grid grid-cols-1 md:grid-cols-4 gap-1 w-11/12 mx-auto">
-                                        {Object.entries(categories).map(([category, subcategories]) => (
+                                    <ul className="py-8 grid grid-cols-2 md:grid-cols-4 gap-1 w-11/12 mx-auto">
+                                        {categories.map((category) => (
                                             <li key={category} className="mb-4">
-                                                <p className="font-semibold text-gray-700 mb-2">{category}</p>
-                                                <ul>
-                                                    {(subcategories as string[]).map((subcat) => (
-                                                        <li key={subcat}>
-                                                            <Link
-                                                                href={`/public/products/${encodeURIComponent(subcat.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-'))}`}
-                                                                className="text-gray-500 hover:text-black text-sm block py-1"
-                                                            >
-                                                                {subcat}
-                                                            </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
+                                                <Link
+                                                    href={`/public/products/${encodeURIComponent(category.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-'))}`}
+                                                    className="font-semibold text-gray-700 hover:text-primary text-base block py-2"
+                                                >
+                                                    {category}
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
@@ -136,22 +128,15 @@ export default function Navbar() {
                                         >
                                             &times;
                                         </button>
-                                        <ul className="py-8 grid grid-cols-1 md:grid-cols-4 gap-1 w-11/12 mx-auto">
-                                            {Object.entries(categories).map(([category, subcategories], catIdx) => (
+                                        <ul className="py-8 grid grid-cols-2 md:grid-cols-4 gap-1 w-11/12 mx-auto">
+                                            {categories.map((category) => (
                                                 <li key={category} className="mb-4">
-                                                    <p className="font-semibold text-gray-700 mb-2">{category}</p>
-                                                    <ul>
-                                                        {(subcategories as string[]).map((subcat, subIdx) => (
-                                                            <li key={subcat}>
-                                                                <Link
-                                                                    href={`/public/products/${encodeURIComponent(subcat.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-'))}`}
-                                                                    className="text-gray-500 hover:text-black text-sm block py-1"
-                                                                >
-                                                                    {subcat}
-                                                                </Link>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
+                                                    <Link
+                                                        href={`/public/products/${encodeURIComponent(category.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-'))}`}
+                                                        className="font-semibold text-gray-700 hover:text-primary text-base block py-2"
+                                                    >
+                                                        {category}
+                                                    </Link>
                                                 </li>
                                             ))}
                                         </ul>
