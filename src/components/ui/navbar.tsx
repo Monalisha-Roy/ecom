@@ -1,11 +1,30 @@
 'use client';
 import Link from "next/link";
-import { useState } from "react";
-import { categories } from "../../../src/types/types"
+import { useEffect, useState } from "react";
+import { Category } from "@/types/types";
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [productsOpen, setProductsOpen] = useState(false);
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    useEffect(() => {
+        async function fetchCategories() {
+            try {
+                const res = await fetch("/api/categories");
+                const data = await res.json();
+                if (Array.isArray(data.categories)) {
+                    setCategories(data.categories);
+                } else {
+                    setCategories([]);
+                    console.error("Unexpected data format:", data);
+                }
+            } catch (error) {
+                console.log("Error fetching categories:", error);
+            }
+        }
+        fetchCategories();
+    }, []);
 
     return (
         <>
@@ -47,32 +66,24 @@ export default function Navbar() {
                                 </svg>
                             </button>
                             {productsOpen && (
-                                <div className="fixed left-0 top-16 w-full h-96 bg-white z-50 overflow-y-auto">
-                                    <button
-                                        className="absolute top-4 right-6 text-gray-500 hover:text-black text-2xl font-bold"
-                                        onClick={() => setProductsOpen(false)}
-                                        aria-label="Close products dropdown"
-                                    >
-                                        &times;
-                                    </button>
-                                    <ul className="py-8 grid grid-cols-2 md:grid-cols-4 gap-1 w-11/12 mx-auto">
-                                        {categories.map((category) => (
-                                            <li key={category} className="mb-4">
-                                                <Link
-                                                    href={`/public/products/${encodeURIComponent(category.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-'))}`}
-                                                    className="font-semibold text-gray-700 hover:text-primary text-base block py-2"
-                                                >
-                                                    {category}
-                                                </Link>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                                <ul className="absolute left-0 mt-2 bg-white shadow-lg rounded-md py-2 w-64 z-50">
+                                    {categories.map((category, idx) => (
+                                        <li key={idx} className="mb-1">
+                                            <Link
+                                                href={`/public/products/${encodeURIComponent((category.name || '').toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-"))}`}
+                                                className="font-semibold text-gray-700 hover:text-primary text-base block py-2 px-4"
+                                            >
+                                                {category.name}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
                             )}
                         </div>
-                        <Link href="/public/cart" className="text-gray-700 hover:text-primary hover:underline hover:decoration-primary mx-4">
-                            Cart
-                        </Link>
+                        <Link
+                            href="/public/products"
+                            className="text-gray-700 hover:text-primary hover:underline hover:decoration-primary mx-4"
+                        >Cart</Link>
                         <Link
                             href="/public/login"
                             className="text-gray-700 hover:underline hover:text-primary hover:decoration-primary mx-4"
@@ -84,7 +95,7 @@ export default function Navbar() {
                     {!menuOpen ? (
                         <button
                             className="md:hidden flex items-center px-2 py-1"
-                            onClick={() => setMenuOpen(!menuOpen)}
+                            onClick={() => setMenuOpen(true)}
                             aria-label="Open menu"
                         >
                             <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,10 +119,10 @@ export default function Navbar() {
                             <Link href="/public/home" className="text-gray-700 hover:text-primary hover:underline hover:decoration-primary w-full py-2" onClick={() => setMenuOpen(false)}>
                                 Home
                             </Link>
-                            <div className="relative group">
+                            <div className="relative group w-full">
                                 <button
                                     onClick={() => setProductsOpen(!productsOpen)}
-                                    className="text-gray-700 hover:text-primary hover:underline hover:decoration-primary flex items-center"
+                                    className="text-gray-700 hover:text-primary hover:underline hover:decoration-primary flex items-center w-full"
                                     type="button"
                                 >
                                     Products
@@ -129,13 +140,13 @@ export default function Navbar() {
                                             &times;
                                         </button>
                                         <ul className="py-8 grid grid-cols-2 md:grid-cols-4 gap-1 w-11/12 mx-auto">
-                                            {categories.map((category) => (
-                                                <li key={category} className="mb-4">
+                                            {categories.map((category, idx) => (
+                                                <li key={idx} className="mb-4">
                                                     <Link
-                                                        href={`/public/products/${encodeURIComponent(category.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-'))}`}
+                                                        href={`/public/products/${encodeURIComponent((category.name || '').toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-"))}`}
                                                         className="font-semibold text-gray-700 hover:text-primary text-base block py-2"
                                                     >
-                                                        {category}
+                                                        {category.name}
                                                     </Link>
                                                 </li>
                                             ))}
@@ -143,9 +154,6 @@ export default function Navbar() {
                                     </div>
                                 )}
                             </div>
-                            <Link href="/public/cart" className="text-gray-700 hover:text-primary hover:underline hover:decoration-primary w-full py-2" onClick={() => setMenuOpen(false)}>
-                                Cart
-                            </Link>
                             <Link
                                 href="/public/login"
                                 className="text-gray-700 hover:underline hover:text-primary hover:decoration-primary w-full py-2"

@@ -26,7 +26,7 @@ export default function Carousel() {
   return (
     <div className="relative">
       {/* Carousel Images */}
-      <div ref={sliderRef} className="keen-slider mt-28 md:mt-12 h-[250px] md:h-[500px]">
+      <div ref={sliderRef} className="keen-slider h-[250px] md:h-[500px]">
         {images.map((src, index) => (
           <div key={index} className="keen-slider__slide h-full">
             <Image
