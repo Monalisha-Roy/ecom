@@ -5,6 +5,7 @@ export type Category = {
 };
 
 export type Product = {
+    id?: string;
     name: string;
     description: string;
     price: number;
@@ -13,4 +14,6 @@ export type Product = {
     stock: number;
     discount_percentage: number;
     featured: boolean;
+    created_at?: string;
+    updated_at?: string;
 };
