@@ -8,6 +8,7 @@ export default function DeleteAndEditProducts() {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingupdate, setLoadingUpdate] = useState(false);
+  const [productLoading, setProductLoading] = useState(false);
   const [editForm, setEditForm] = useState({
     name: "",
     description: "",
@@ -21,6 +22,7 @@ export default function DeleteAndEditProducts() {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setProductLoading(true);
       try {
         const res = await fetch("/api/getProducts");
         const data = await res.json();
@@ -37,6 +39,7 @@ export default function DeleteAndEditProducts() {
           discount_percentage: Number(item.discount_percentage),
         }));
         setProducts(parsedProducts);
+        setProductLoading(false);
       } catch (error) {
         console.error("Failed to fetch products", error);
       }
@@ -154,8 +157,64 @@ export default function DeleteAndEditProducts() {
 
   return (
     <div className="overflow-x-auto p-4">
-      <h1 className="text-xl font-semibold mb-4">Delete Products</h1>
-      <table className="min-w-full border border-gray-200 rounded">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col h-40 w-2/6 justify-center items-center mx-auto border border-gray-600">
+          <h3 className="text-2xl text-blue-400 mb-4 font-bold">Edit Product</h3>
+          <form
+            className="flex items-center gap-2"
+            onSubmit={e => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const input = form.elements.namedItem("editId") as HTMLInputElement;
+              if (input && input.value) {
+          handleEditProduct(input.value);
+              }
+            }}
+          >
+            <input
+              type="text"
+              name="editId"
+              placeholder="Enter Product ID"
+              className="border px-2 py-1 rounded"
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-6 py-1 rounded"
+            >
+              Edit
+            </button>
+          </form>
+        </div>
+        <div className="flex flex-col h-40 w-2/6 justify-center items-center mx-auto border border-gray-600">
+          <h3 className="text-2xl text-red-400 mb-4 font-bold">Delete Product</h3>
+          <form
+            className="flex items-center gap-2"
+            onSubmit={e => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const input = form.elements.namedItem("deleteId") as HTMLInputElement;
+              if (input && input.value) {
+          setOpenDeleteId(input.value);
+              }
+            }}
+          >
+            <input
+              type="text"
+              name="deleteId"
+              placeholder="Enter Product ID"
+              className="border px-2 py-1 rounded"
+            />
+            <button
+              type="submit"
+              className="bg-red-600 text-white px-6 py-1 rounded"
+            >
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+      <h1 className="text-xl font-semibold mb-4">Products List</h1>
+      <table className="w-full h-96 overflow-y-scroll border border-gray-200 rounded">
         <thead>
           <tr className="bg-gray-100">
             <th className="border px-4 py-2 text-left">Name</th>
@@ -166,7 +225,7 @@ export default function DeleteAndEditProducts() {
           </tr>
         </thead>
         <tbody>
-          {products.length > 0 ? (
+          {!productLoading ? (
             products.map((product) => (
               <tr key={product.id} className="hover:bg-gray-50">
                 <td className="border px-4 py-2">{product.name}</td>
@@ -270,6 +329,7 @@ export default function DeleteAndEditProducts() {
                           <label>
                             Image URL:
                             <div className="flex items-center gap-2">
+                              
                               <input
                                 type="text"
                                 name="image_url"
@@ -389,7 +449,7 @@ export default function DeleteAndEditProducts() {
           ) : (
             <tr>
               <td colSpan={5} className="text-center py-4">
-                No products found.
+                Loading Products......
               </td>
             </tr>
           )}
