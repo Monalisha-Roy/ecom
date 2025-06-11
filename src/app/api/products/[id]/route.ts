@@ -76,3 +76,23 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: "Failed to update product" }, { status: 500 });
   }
 }
+
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const productId = (await params).id;
+
+  try {
+    const result = await pool.query("SELECT * FROM products WHERE id = $1", [productId]);
+
+    if (result.rowCount === 0) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ product: result.rows[0] }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+  }
+}

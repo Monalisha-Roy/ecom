@@ -11,14 +11,9 @@ export default function Navbar() {
     useEffect(() => {
         async function fetchCategories() {
             try {
-                const res = await fetch("/api/categories");
+                const res = await fetch("/api/category");
                 const data = await res.json();
-                if (Array.isArray(data.categories)) {
-                    setCategories(data.categories);
-                } else {
-                    setCategories([]);
-                    console.error("Unexpected data format:", data);
-                }
+                setCategories(data.products || []);
             } catch (error) {
                 console.log("Error fetching categories:", error);
             }

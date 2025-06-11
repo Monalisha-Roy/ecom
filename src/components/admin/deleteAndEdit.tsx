@@ -167,7 +167,7 @@ export default function DeleteAndEditProducts() {
               const form = e.target as HTMLFormElement;
               const input = form.elements.namedItem("editId") as HTMLInputElement;
               if (input && input.value) {
-          handleEditProduct(input.value);
+                handleEditProduct(input.value);
               }
             }}
           >
@@ -194,7 +194,7 @@ export default function DeleteAndEditProducts() {
               const form = e.target as HTMLFormElement;
               const input = form.elements.namedItem("deleteId") as HTMLInputElement;
               if (input && input.value) {
-          setOpenDeleteId(input.value);
+                setOpenDeleteId(input.value);
               }
             }}
           >
@@ -214,13 +214,15 @@ export default function DeleteAndEditProducts() {
         </div>
       </div>
       <h1 className="text-xl font-semibold mb-4">Products List</h1>
-      <table className="w-full h-96 overflow-y-scroll border border-gray-200 rounded">
+      <table className="w-full h-96 overflow-clip border border-gray-200 rounded">
         <thead>
           <tr className="bg-gray-100">
             <th className="border px-4 py-2 text-left">Name</th>
             <th className="border px-4 py-2 text-left">Price</th>
             <th className="border px-4 py-2 text-left">Stock</th>
             <th className="border px-4 py-2 text-left">Featured</th>
+            <th className="border px-4 py-2 text-left">Discount</th>
+            <th className="border px-4 py-2 text-left">Image</th>
             <th className="border px-4 py-2 text-left">Actions</th>
           </tr>
         </thead>
@@ -236,7 +238,25 @@ export default function DeleteAndEditProducts() {
                 <td className="border px-4 py-2">
                   {product.featured ? "Yes" : "No"}
                 </td>
-                <td className="border px-4 py-2 flex items-center justify-around gap-2">
+                <td className="border px-4 py-2">
+                  {product.discount_percentage
+                    ? `${product.discount_percentage}%`
+                    : "None"}
+                </td>
+                <td className="border px-4 py-2">
+                  <Image
+                    src={
+                      product.image_url && product.image_url.startsWith("http")
+                        ? product.image_url
+                        : "/default.jpg"
+                    }
+                    alt={product.name}
+                    height={128}
+                    width={128}
+                    className="w-32 h-32 object-cover rounded mb-2"
+                  />
+                </td>
+                <td className="border px-4 py-2 flex items-center justify-around h-full gap-2">
                   <button
                     onClick={() => product.id && setOpenDeleteId(product.id)}
                     className="text-red-600 hover:underline"
@@ -329,7 +349,7 @@ export default function DeleteAndEditProducts() {
                           <label>
                             Image URL:
                             <div className="flex items-center gap-2">
-                              
+
                               <input
                                 type="text"
                                 name="image_url"
