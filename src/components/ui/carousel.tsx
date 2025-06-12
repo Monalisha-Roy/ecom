@@ -24,7 +24,7 @@ export default function Carousel() {
   }, [instanceRef]);
 
   return (
-    <div className="relative">
+    <div className="relative mt-16 md:mt-0">
       {/* Carousel Images */}
       <div ref={sliderRef} className="keen-slider h-[250px] md:h-[500px]">
         {images.map((src, index) => (

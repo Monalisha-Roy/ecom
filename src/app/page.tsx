@@ -6,7 +6,7 @@ import Categories from "@/components/ui/categories";
 
 export default function Home() {
     return (
-        <main className="min-h-screen w-full bg-gray-50">
+        <main className="min-h-screen w-full bg-background">
             <Navbar/>
             <Carousel />
             <div className="w-11/12 mx-auto mb-20 ">
