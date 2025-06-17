@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { RiSearchLine } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import useUser from "@/hooks/useUser"; 
+import useUser from "@/hooks/useUser";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -77,7 +77,7 @@ export default function Navbar() {
         window.dispatchEvent(new Event('authChange'));
         setProfileOpen(false);
         setMenuOpen(false);
-        router.refresh?.(); 
+        router.refresh?.();
         router.push("/");
       } else {
         // Optionally show an error message to the user
@@ -233,7 +233,7 @@ export default function Navbar() {
 
             {/* Conditionally render login or profile dropdown */}
             {isLoggedIn ? (
-                <div className="relative ml-4">
+              <div className="relative ml-4">
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
                   className="flex items-center gap-2 text-gray-700 hover:text-primary"
@@ -244,36 +244,36 @@ export default function Navbar() {
 
                 {profileOpen && (
                   <>
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setProfileOpen(false)}
-                  />
-                  <div className="absolute right-0 top-10 mt-2 bg-white rounded-xl shadow-xl p-4 w-56 z-50 border border-gray-100">
-                    <div className="flex flex-col items-start border-b pb-3 mb-3">
-                    <Link href="/profile" className="w-full">
-                      <span className="flex items-center gap-2 px-2 py-1 rounded-md font-semibold text-gray-800 hover:bg-gray-100 transition-colors">
-                      <FaUserCircle size={20} className="text-primary" />
-                      Profile
-                      </span>
-                    </Link>
-                    <span className="text-xs text-gray-500 mt-1 px-2 break-all">{user?.email}</span>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setProfileOpen(false)}
+                    />
+                    <div className="absolute right-0 top-10 mt-2 bg-white rounded-xl shadow-xl p-4 w-56 z-50 border border-gray-100">
+                      <div className="flex flex-col items-start border-b pb-3 mb-3">
+                        <Link href="/profile" className="w-full">
+                          <span className="flex items-center gap-2 px-2 py-1 rounded-md font-semibold text-gray-800 hover:bg-gray-100 transition-colors">
+                            <FaUserCircle size={20} className="text-primary" />
+                            Profile
+                          </span>
+                        </Link>
+                        <span className="text-xs text-gray-500 mt-1 px-2 break-all">{user?.email}</span>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-2 text-red-600 hover:bg-red-50 px-3 py-2 rounded-md font-medium transition-colors"
+                        disabled={loggingOut}
+                      >
+                        <FiLogOut size={18} />
+                        {loggingOut ? (
+                          <span className="animate-pulse">Loading...</span>
+                        ) : (
+                          "Logout"
+                        )}
+                      </button>
                     </div>
-                    <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-2 text-red-600 hover:bg-red-50 px-3 py-2 rounded-md font-medium transition-colors"
-                    disabled={loggingOut}
-                    >
-                    <FiLogOut size={18} />
-                    {loggingOut ? (
-                      <span className="animate-pulse">Loading...</span>
-                    ) : (
-                      "Logout"
-                    )}
-                    </button>
-                  </div>
                   </>
                 )}
-                </div>
+              </div>
             ) : (
               <Link
                 href="/auth"
@@ -287,7 +287,7 @@ export default function Navbar() {
           {!menuOpen ? (
             <div className="flex gap-1 items-center justify-center md:hidden">
               <Link
-                href="/public/products"
+                href="/cart"
                 className="text-gray-700 flex gap-0.5 "
               ><TiShoppingCart size={25} />Cart</Link>
               <button
@@ -432,26 +432,50 @@ export default function Navbar() {
 
               {/* Conditionally render login or profile in mobile */}
               {isLoggedIn ? (
-                <>
-                  <div className="w-full py-2 flex items-center gap-3">
-                    <FaUserCircle size={24} />
-                    <div>
-                      <p className="font-semibold">{user?.name}</p>
-                      <p className="text-sm text-gray-600">{user?.email}</p>
-                    </div>
-                  </div>
+                <div className="relative w-full">
                   <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-2 text-red-600 hover:bg-red-50 p-2 rounded"
+                    onClick={() => setProfileOpen(!profileOpen)}
+                    className="flex items-center gap-2 text-gray-700 hover:text-primary w-full px-2 py-2 rounded-md font-semibold"
                   >
-                    <FiLogOut size={18} />
-                    Logout
+                    <FaUserCircle size={22} />
+                    <span className="font-medium truncate">{user?.name || "Profile"}</span>
                   </button>
-                </>
+                  {profileOpen && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setProfileOpen(false)}
+                      />
+                      <div className="absolute left-0 top-12 mt-2 bg-white rounded-xl shadow-xl p-4 w-64 z-50 border border-gray-100">
+                        <div className="flex flex-col items-start border-b pb-3 mb-3 w-full">
+                          <Link href="/profile" className="w-full" onClick={() => setMenuOpen(false)}>
+                            <span className="flex items-center gap-2 px-2 py-1 rounded-md font-semibold text-gray-800 hover:bg-gray-100 transition-colors">
+                              <FaUserCircle size={18} className="text-primary" />
+                              Profile
+                            </span>
+                          </Link>
+                          <span className="text-xs text-gray-500 mt-1 px-2 break-all">{user?.email}</span>
+                        </div>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-2 text-red-600 hover:bg-red-50 px-3 py-2 rounded-md font-medium transition-colors"
+                          disabled={loggingOut}
+                        >
+                          <FiLogOut size={16} />
+                          {loggingOut ? (
+                            <span className="animate-pulse">Loading...</span>
+                          ) : (
+                            "Logout"
+                          )}
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
               ) : (
                 <Link
                   href="/auth"
-                  className="text-gray-700 w-full py-2"
+                  className="text-gray-700 hover:text-primary w-full px-2 py-2 rounded-md font-semibold"
                   onClick={() => setMenuOpen(false)}
                 >
                   Login
