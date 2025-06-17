@@ -1,5 +1,5 @@
 
-import Cart from '@/components/cart/cart';
+// import Cart from '@/components/cart/cart';
 import { getServerUser } from '@/lib/server-auth';
 
 export default async function CartServer() {
@@ -19,7 +19,7 @@ export default async function CartServer() {
   return (
     <div className="min-h-screen p-8">
       <h1 className="text-3xl font-bold mb-6">Your Shopping Cart</h1>
-      <Cart userId={user.id} />
+      {/* <Cart userId={user.id} /> */}
     </div>
   );
 }
