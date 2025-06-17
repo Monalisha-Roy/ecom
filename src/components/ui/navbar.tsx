@@ -39,6 +39,37 @@ export default function Navbar() {
     fetchCategories();
   }, []);
 
+  const [cartCount, setCartCount] = useState(0);
+
+  // Add this useEffect
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      if (!user) return;
+
+      try {
+        const res = await fetch('/api/cart');
+        if (res.ok) {
+          const data = await res.json();
+          type CartItem = { quantity: number };
+          const totalItems = data.items?.reduce((sum: number, item: CartItem) => sum + item.quantity, 0) || 0;
+          setCartCount(totalItems);
+        }
+      } catch (error) {
+        console.error('Error fetching cart count:', error);
+      }
+    };
+
+    fetchCartCount();
+
+    // Listen for cart update events
+    const handleCartUpdate = () => fetchCartCount();
+    window.addEventListener('cartUpdate', handleCartUpdate);
+
+    return () => {
+      window.removeEventListener('cartUpdate', handleCartUpdate);
+    };
+  }, [user]);
+
   const handleFilter = () => {
     if (!category_id && !price) return;
     else if (price == 0) router.push(`/category/${category_id}`);
@@ -228,9 +259,16 @@ export default function Navbar() {
             </div>
             <Link
               href="/cart"
-              className="text-gray-700 flex gap-0.5 hover:text-primary mx-4"
-            ><TiShoppingCart size={25} />Cart</Link>
-
+              className="text-gray-700 flex gap-0.5 hover:text-primary mx-4 relative"
+            >
+              <TiShoppingCart size={25} />
+              Cart
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             {/* Conditionally render login or profile dropdown */}
             {isLoggedIn ? (
               <div className="relative ml-4">
@@ -288,8 +326,16 @@ export default function Navbar() {
             <div className="flex gap-1 items-center justify-center md:hidden">
               <Link
                 href="/cart"
-                className="text-gray-700 flex gap-0.5 "
-              ><TiShoppingCart size={25} />Cart</Link>
+                className="text-gray-700 flex gap-0.5 hover:text-primary mx-4 relative"
+              >
+                <TiShoppingCart size={25} />
+                Cart
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
               <button
                 className=" flex items-center px-2 py-1 text-gray-700"
                 onClick={() => setMenuOpen(true)}
@@ -311,7 +357,7 @@ export default function Navbar() {
         {menuOpen && (
           <div className="md:hidden bg-white shadow-lg absolute top-16 left-0 w-full z-50">
             <div className="flex flex-col items-start p-4 gap-4">
-              <Link href="/public/home" className="text-gray-700 hover:text-primary hover:underline hover:decoration-primary w-full py-2" onClick={() => setMenuOpen(false)}>
+              <Link href="/" className="text-gray-700 hover:text-primary hover:underline hover:decoration-primary w-full py-2" onClick={() => setMenuOpen(false)}>
                 Home
               </Link>
               <div className="relative group w-full">
@@ -346,7 +392,7 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-              <div className="relative w-full">
+              <div className="relative w-full ">
                 <button
                   onClick={() => setFilterOpen(true)}
                   className="flex items-start text-gray-700 hover:text-primary w-full"
@@ -356,11 +402,11 @@ export default function Navbar() {
                 </button>
                 {filterOpen && (
                   <div
-                    className="fixed inset-0 z-50 flex items-center justify-center"
+                    className="fixed inset-0 flex items-center justify-center z-50"
                     onClick={() => setFilterOpen(false)}
                   >
                     <div
-                      className="relative mt-2 bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-xs mx-auto z-50"
+                      className="bg-white rounded-lg shadow-lg p-6 w-80 relative"
                       onClick={e => e.stopPropagation()}
                     >
                       <button
@@ -387,15 +433,10 @@ export default function Navbar() {
                             onChange={e => setCategoryId(e.target.value)}
                           >
                             <option value="">All</option>
-                            {categories.map((category, idx) => (
-                              <li key={idx} className="mb-1">
-                                <Link
-                                  href={`/public/category/${category.id}`}
-                                  className="font-semibold text-gray-700 hover:text-primary text-base block py-2 px-4"
-                                >
-                                  {category.slug}
-                                </Link>
-                              </li>
+                            {categories.map((cat, idx) => (
+                              <option key={idx} value={cat.id}>
+                                {cat.slug}
+                              </option>
                             ))}
                           </select>
                         </div>

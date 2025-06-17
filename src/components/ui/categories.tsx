@@ -35,7 +35,7 @@ export default function Categories() {
             {categories.map((category) => (
             <Link
                 key={category.id}
-                href={`public/category/${category.id}`}
+                href={`category/${category.id}`}
                 className="border border-gray-200 rounded-lg p-6 h-48 bg-white flex flex-col justify-center items-center shadow-sm hover:shadow-md transition-shadow"
             >
                 <h3 className="font-semibold text-lg mb-1">{category.slug}</h3>
