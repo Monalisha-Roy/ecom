@@ -23,14 +23,10 @@ export default function AddProduct() {
     useEffect(() => {
         async function fetchCategories() {
             try {
-                const res = await fetch("/api/categories");
+                setLoadingCat(true);
+                const res = await fetch("/api/category");
                 const data = await res.json();
-                if (Array.isArray(data.categories)) {
-                    setCategories(data.categories);
-                } else {
-                    setCategories([]);
-                    console.error("Unexpected data format:", data);
-                }
+                setCategories(data.products || []);
             } catch (error) {
                 console.log("Error fetching categories:", error);
             } finally {
@@ -158,7 +154,7 @@ export default function AddProduct() {
                             <option value="">Select Category</option>
                             {categories.map((cat) => (
                                 <option key={cat.id} value={cat.id}>
-                                    {cat.name}
+                                    {cat.slug}
                                 </option>
                             ))}
                         </>
@@ -178,9 +174,9 @@ export default function AddProduct() {
                         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                     >
                         {loading ? (
-                            <span className="animate-spin">Uploading...</span>
+                            <span className="animate-spin">Fetching url...</span>
                         ) : (
-                            <span>Upload Image</span>
+                            <span className="px-4">Get url</span>
                         )}
                     </button>
                 </div>

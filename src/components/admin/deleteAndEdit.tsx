@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useRef, useState } from "react";
 import { Product } from "@/types/types";
 import Image from "next/image";
