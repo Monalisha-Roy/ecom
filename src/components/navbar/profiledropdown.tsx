@@ -51,7 +51,7 @@ export function ProfileDropdown({
             >
               <FiLogOut size={18} />
               {loggingOut ? (
-                <span className="animate-pulse">Loading...</span>
+                <span className="animate-pulse text-red-400">Logging out...</span>
               ) : (
                 "Logout"
               )}

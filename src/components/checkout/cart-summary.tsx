@@ -19,13 +19,13 @@ export default function CartSummary({ cartItems }: { cartItems: CartItem[] }) {
     <div className="space-y-4">
       {cartItems.map(item => (
         <div key={item.id} className="flex items-center border-b pb-4">
-          <div className="relative w-16 h-16 mr-3">
+          <div className="relative w-32 h-32 mr-3">
             <Image
               src={item.image_url || '/default.jpg'}
               alt={item.name || 'Product Image'}
               className="w-full h-full object-contain"
-              height={64}
-              width={64}
+              height={96}
+              width={96}
             />
           </div>
           
