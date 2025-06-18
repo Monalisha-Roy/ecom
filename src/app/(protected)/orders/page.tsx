@@ -27,12 +27,8 @@ export default async function Orders() {
   }
 
   try {
-    // Use relative path to avoid environment variable issues
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/orders`;
-    
-    // Alternative: use relative path if same origin
-    // const apiUrl = '/api/orders';
-    
+    const apiUrl = '/api/orders';
+  
     const response = await fetch(apiUrl, {
       headers: {
         Cookie: `token=${token}`
