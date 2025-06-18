@@ -24,8 +24,8 @@ export default function OrderItem({ item }: OrderItemProps) {
           src={item.image_url || '/default-product.jpg'}
           alt={item.product_name}
           className="object-contain"
-          width={160}
-          height={160}
+          width={120}
+          height={120}
         />
       </div>
       

@@ -17,10 +17,12 @@ export default function useUser() {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/me');
-      const data = await res.json();
-      setUser(data.user || null);
-    } catch (error) {
+    const res = await fetch('/api/auth/me', {
+      credentials: 'include', 
+    });
+    const data = await res.json();
+    setUser(data.user || null);
+  } catch (error) {
       setUser(null);
     } finally {
       setLoading(false);
