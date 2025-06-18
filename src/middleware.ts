@@ -5,7 +5,9 @@ const protectedRoutes = [
   '/admin',
   '/admin/dashboard',
   '/cart',
-  '/profile'
+  '/profile',
+  '/checkout',
+  '/orders'
 ];
 
 const adminRoutes = [
@@ -83,5 +85,7 @@ export const config = {
     '/admin/:path*',
     '/cart/:path*',
     '/profile/:path*',
+    '/checkout/:path*',
+    '/orders/:path*',
   ],
 };

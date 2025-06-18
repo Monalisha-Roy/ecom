@@ -15,7 +15,7 @@ export default function ProductCard({ products }: { products: Product[] }) {
   const handleAddToCart = async (e: React.MouseEvent, productId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (!user) {
       router.push('/auth?redirect=' + encodeURIComponent(window.location.pathname));
       return;
@@ -27,9 +27,9 @@ export default function ProductCard({ products }: { products: Product[] }) {
       const response = await fetch('/api/cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          productId, 
-          quantity: 1 
+        body: JSON.stringify({
+          productId,
+          quantity: 1
         })
       });
 
@@ -81,18 +81,17 @@ export default function ProductCard({ products }: { products: Product[] }) {
                   {product.discount_percentage > 0 ? `-${Math.round(product.discount_percentage)}%` : ""}
                 </span>
               </div>
-              <button 
+              <button
                 onClick={(e) => {
                   if (typeof product.id === 'string') {
                     handleAddToCart(e, product.id);
                   }
                 }}
                 disabled={typeof product.id !== 'string' || addingItems[product.id as string]}
-                className={`flex items-center gap-1 ${
-                  typeof product.id === 'string' && addingItems[product.id as string]
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-blue-600 hover:bg-blue-700'
-                } text-white px-3 py-1.5 rounded transition text-sm md:text-base`}
+                className={`flex items-center px-3 gap-1 ${typeof product.id === 'string' && addingItems[product.id as string]
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700'
+                  } text-white px-3 py-1.5 rounded transition text-sm md:text-base`}
               >
                 {typeof product.id === 'string' && addingItems[product.id as string] ? (
                   'Adding...'
@@ -102,6 +101,27 @@ export default function ProductCard({ products }: { products: Product[] }) {
                     Add
                   </>
                 )}
+              </button>
+              <button
+                onClick={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  if (!user) {
+                    router.push('/auth?redirect=' + encodeURIComponent(window.location.pathname));
+                    return;
+                  }
+
+                  // Redirect to checkout with product details as query params
+                  const params = new URLSearchParams({
+                    product_id: String(product.id),
+                    quantity: '1'
+                  });
+                  router.push(`/checkout?${params.toString()}`);
+                }}
+                className="flex items-center gap-1 px-3 bg-green-600 hover:bg-green-700 text-white py-1.5 rounded transition text-sm md:text-base"
+              >
+                Buy Now
               </button>
             </div>
           </div>

@@ -147,6 +147,8 @@ export default function CartPage() {
                   src={item.image_url || '/default.jpg'} 
                   alt={item.name} 
                   className="w-full h-full object-contain"
+                  height={96}
+                  width={96}
                 />
               </div>
               
