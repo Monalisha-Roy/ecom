@@ -27,8 +27,9 @@ export default async function Orders() {
   }
 
   try {
-    const apiUrl = '/api/orders';
-  
+    const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const apiUrl = new URL('/api/orders', origin).toString();
+    
     const response = await fetch(apiUrl, {
       headers: {
         Cookie: `token=${token}`
@@ -83,12 +84,6 @@ export default async function Orders() {
             >
               Return Home
             </Link>
-            <a 
-              href="/login" 
-              className="text-blue-600 hover:underline text-center"
-            >
-              Go to Login
-            </a>
           </div>
         </div>
       </div>
