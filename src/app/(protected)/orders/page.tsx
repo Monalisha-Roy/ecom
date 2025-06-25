@@ -1,5 +1,5 @@
 'use server';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import OrdersPage from '@/components/orders/orders-page';
 import Link from 'next/link';
 
@@ -14,7 +14,7 @@ function isErrorWithMessage(err: unknown): err is { message: string } {
 
 export default async function Orders() {
   const token = (await cookies()).get('token')?.value;
-  
+
   if (!token) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -25,20 +25,22 @@ export default async function Orders() {
       </div>
     );
   }
-
+  let errorMessage = 'Failed to load order history. Please try again later.';
   try {
-    const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const apiUrl = new URL('/api/orders', origin).toString();
-    
+    // Dynamically determine origin (works on Vercel and localhost)
+    const host = (await headers()).get('host');
+    const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+    const origin = `${protocol}://${host}`;
+    const apiUrl = `${origin}/api/orders`;
+
     const response = await fetch(apiUrl, {
       headers: {
-        Cookie: `token=${token}`
+        Cookie: `token=${token}`  // assuming you have the token value
       },
       cache: 'no-store'
     });
 
     if (!response.ok) {
-      // Try to parse error as JSON, fallback to text
       let errorData;
       try {
         errorData = await response.json();
@@ -54,7 +56,7 @@ export default async function Orders() {
   } catch (error: unknown) {
     console.error('Order fetch error:', error);
 
-    let errorMessage = 'Failed to load order history. Please try again later.';
+   
     let errorDetails = '';
     if (isErrorWithMessage(error)) {
       const message = error.message;
@@ -69,24 +71,26 @@ export default async function Orders() {
     } else {
       errorDetails = String(error);
     }
+    return <div>{errorDetails}</div>;
+  }
 
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="max-w-md p-8 bg-white rounded shadow">
-          <h2 className="text-2xl font-bold mb-4">Error</h2>
-          <p className="text-red-600 mb-4">{errorMessage}</p>
-          <p className="text-sm text-gray-500 mb-4">Details: {errorDetails}</p>
-          
-          <div className="flex flex-col gap-2">
-            <Link 
-              href="/" 
-              className="text-blue-600 hover:underline text-center"
-            >
-              Return Home
-            </Link>
-          </div>
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="max-w-md p-8 bg-white rounded shadow">
+        <h2 className="text-2xl font-bold mb-4">Error</h2>
+        <p className="text-red-600 mb-4">{errorMessage}</p>
+        <p className="text-sm text-gray-500 mb-4">Details: {errorMessage}</p>
+
+        <div className="flex flex-col gap-2">
+          <Link
+            href="/"
+            className="text-blue-600 hover:underline text-center"
+          >
+            Return Home
+          </Link>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
