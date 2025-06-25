@@ -6,8 +6,9 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 
 const images = [
-  "/img1.jpg",
-  "/bg.jpg",
+  "/bg1.png",
+  "/bg2.png",
+  "/bg3.png"
 ];
 
 export default function Carousel() {
@@ -24,17 +25,20 @@ export default function Carousel() {
   }, [instanceRef]);
 
   return (
-    <div className="relative mt-16 md:mt-0">
+    <div className="relative md:top-0 md:left-0 md:w-full md:z-0 mt-12 md:mt-0">
       {/* Carousel Images */}
-      <div ref={sliderRef} className="keen-slider h-[250px] md:h-[500px]">
+      <div
+        ref={sliderRef}
+        className="keen-slider h-[250px] md:h-[550px]"
+      >
         {images.map((src, index) => (
           <div key={index} className="keen-slider__slide h-full">
             <Image
               src={src}
               alt={`Slide ${index + 1}`}
-              width={1920}
+              width={1800}
               height={500}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-fit"
             />
           </div>
         ))}
@@ -46,7 +50,6 @@ export default function Carousel() {
         <p className="text-md md:text-xl mb-6 max-w-xl drop-shadow">
           Discover top deals, latest trends, and must-have products. Shop smart, live better.
         </p>
-        
       </div>
     </div>
   );
