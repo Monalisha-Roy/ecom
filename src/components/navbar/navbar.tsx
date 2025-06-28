@@ -119,7 +119,7 @@ export default function Navbar() {
         <div className="w-11/12 h-16 flex items-center justify-between mx-auto">
           <div className="items-start">
             <Link href={"/"}>
-              <Image src={"/logo.png"} alt={"logo"} height={100} width={200} className="p-4" />
+              <Image src={"/logo.png"} alt={"logo"} height={100} width={200} className="pl-0 pr-5 pb-5 pt-5" />
             </Link>
           </div>
 
