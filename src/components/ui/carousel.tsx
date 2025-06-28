@@ -45,11 +45,13 @@ export default function Carousel() {
       </div>
 
       {/* Static Text Overlay */}
-      <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-center px-4 z-10">
-        <h1 className="text-3xl md:text-5xl font-bold drop-shadow md:mb-4">Everything You Need, All in One Place</h1>
-        <p className="text-md md:text-xl mb-6 max-w-xl drop-shadow">
-          Discover top deals, latest trends, and must-have products. Shop smart, live better.
-        </p>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 z-10">
+        <div className="bg-bg/30 backdrop-blur-sm rounded-lg p-4 flex flex-col items-center justify-center">
+          <h1 className="text-3xl md:text-5xl font-bold drop-shadow md:mb-4 text-center">Everything You Need, All in One Place</h1>
+          <p className="text-md md:text-xl mb-6 max-w-xl drop-shadow text-center">
+        Discover top deals, latest trends, and must-have products. Shop smart, live better.
+          </p>
+        </div>
       </div>
     </div>
   );

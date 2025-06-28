@@ -1,4 +1,3 @@
-// FilterDropdown.tsx
 import { TbFilter } from "react-icons/tb";
 
 export function FilterDropdown({
@@ -14,10 +13,10 @@ export function FilterDropdown({
   filterOpen: boolean;
   setFilterOpen: (open: boolean) => void;
   categories: { id: string; slug: string }[];
-  category_id: string; // Changed to string
-  setCategoryId: (id: string) => void; // Changed to string
-  price: number; // Simplified to single number
-  setPrice: (price: number) => void; // Simplified to single number
+  category_id: string; 
+  setCategoryId: (id: string) => void; 
+  price: number; 
+  setPrice: (price: number) => void;
   handleFilter: () => void;
 }) {
   return (
@@ -98,4 +97,3 @@ export function FilterDropdown({
   );
 }
 
-// In your Navbar component

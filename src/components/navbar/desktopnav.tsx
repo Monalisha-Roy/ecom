@@ -5,7 +5,6 @@ import { ProductsDropdown } from "./productsdropdown";
 import { FilterDropdown } from "./filterdropdown";
 import { RiSearchLine } from "react-icons/ri";
 
-// DesktopNav.tsx
 export function DesktopNav({
   searchTerm,
   setSearchTerm,
@@ -34,15 +33,15 @@ export function DesktopNav({
   handleSearch: (e: React.FormEvent) => void;
   filterOpen: boolean;
   setFilterOpen: (open: boolean) => void;
-  categories: { id: string; slug: string }[]; // Changed to string
-  category_id: string; // Changed to string
-  setCategoryId: (id: string) => void; // Changed to string
-  price: number; // Simplified to single number
-  setPrice: (price: number) => void; // Simplified to single number
+  categories: { id: string; slug: string }[]; 
+  category_id: string; 
+  setCategoryId: (id: string) => void; 
+  price: number; 
+  setPrice: (price: number) => void; 
   handleFilter: () => void;
   productsOpen: boolean;
   setProductsOpen: (open: boolean) => void;
-  handleCategoryClick: (categoryId: string) => void; // Changed to string
+  handleCategoryClick: (categoryId: string) => void; 
   cartCount: number;
   isLoggedIn: boolean;
   user?: { name?: string; email?: string };

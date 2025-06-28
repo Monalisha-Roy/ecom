@@ -2,7 +2,6 @@ import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 
-// MobileMenu.tsx
 export function MobileMenu({
   menuOpen,
   setMenuOpen,
