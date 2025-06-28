@@ -7,6 +7,8 @@ import { MobileMenu } from "./mobilemenu";
 import { DesktopNav } from "./desktopnav";
 import { MobileSearch } from "./mobilesearch";
 import { MobileNav } from "./mobilenav";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -116,7 +118,9 @@ export default function Navbar() {
       <nav className="fixed top-0 left-0 w-full bg-background shadow z-50">
         <div className="w-11/12 h-16 flex items-center justify-between mx-auto">
           <div className="items-start">
-            <p className="text-3xl text-primary font-bold">SHOPEase</p>
+            <Link href={"/"}>
+              <Image src={"/logo.png"} alt={"logo"} height={100} width={200} className="p-4" />
+            </Link>
           </div>
 
           <DesktopNav

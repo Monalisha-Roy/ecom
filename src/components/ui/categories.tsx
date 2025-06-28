@@ -3,11 +3,12 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Category } from "@/types/types";
+import Image from "next/image";
 
 export default function Categories() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
-    //const [categoryImages, setCategoryImages] = useState<{ [key: string]: string[] }>({});
+    const [categoryImages, setCategoryImages] = useState<{ [key: string]: string[] }>({});
 
     // Fetch categories from API
     useEffect(() => {
@@ -26,36 +27,36 @@ export default function Categories() {
     }, []);
 
     // Function to fetch images for one category
-    // async function fetchImages(categoryId: string) {
-    //     try {
-    //         const res = await fetch(`/api/getImages/${categoryId}`); // ✅ corrected line
-    //         if (!res.ok) {
-    //             throw new Error('Failed to fetch images');
-    //         }
-    //         const data = await res.json();
-    //         return data.images || [];
-    //     } catch (error) {
-    //         console.error("Error fetching images:", error);
-    //         return [];
-    //     }
-    // }
+    async function fetchImages(categoryId: string) {
+        try {
+            const res = await fetch(`/api/getImages/${categoryId}`); // ✅ corrected line
+            if (!res.ok) {
+                throw new Error('Failed to fetch images');
+            }
+            const data = await res.json();
+            return data.images || [];
+        } catch (error) {
+            console.error("Error fetching images:", error);
+            return [];
+        }
+    }
 
     // Fetch all category images when categories are loaded
-    // useEffect(() => {
-    //     async function fetchAllImages() {
-    //         const imagesMap: { [key: string]: string[] } = {};
-    //         await Promise.all(
-    //             categories.map(async (category) => {
-    //                 const images = await fetchImages(category.id);
-    //                 imagesMap[category.id] = images;
-    //             })
-    //         );
-    //         setCategoryImages(imagesMap);
-    //     }
-    //     if (categories.length > 0) {
-    //         fetchAllImages();
-    //     }
-    // }, [categories]);
+    useEffect(() => {
+        async function fetchAllImages() {
+            const imagesMap: { [key: string]: string[] } = {};
+            await Promise.all(
+                categories.map(async (category) => {
+                    const images = await fetchImages(category.id);
+                    imagesMap[category.id] = images;
+                })
+            );
+            setCategoryImages(imagesMap);
+        }
+        if (categories.length > 0) {
+            fetchAllImages();
+        }
+    }, [categories]);
 
     if (loading) {
         return (
@@ -74,7 +75,7 @@ export default function Categories() {
                     className="border border-gray-200 rounded-lg p-6 h-72 bg-white flex flex-col justify-center items-center shadow-sm hover:shadow-md transition-shadow"
                 >
                     <h3 className="font-sans text-md mb-1">{category.slug}</h3>
-                    {/* <div className="grid grid-cols-2 gap-2 md:gap-5">
+                    <div className="grid grid-cols-2 gap-2 md:gap-5">
                         {categoryImages[category.id] === undefined && (
                             <span className="text-gray-400 text-xs">Loading images...</span>
                         )}
@@ -88,7 +89,7 @@ export default function Categories() {
                                 className="w-24 h-24 object-cover rounded"
                             />
                         ))}
-                    </div> */}
+                    </div> 
                 </Link>
             ))}
         </main>
